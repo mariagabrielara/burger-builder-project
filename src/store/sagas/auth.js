@@ -1,25 +1,13 @@
-import { put, call } from 'redux-saga/effects';// sirve para reemplazar dispatch
-import { delay } from 'redux-saga'; //sirve para reemplazar timeout
+import { put, call } from 'redux-saga/effects';
+import { delay } from 'redux-saga'; 
 
 import * as actions from '../actions/index';
 import axios from 'axios';
 
-//yield significa que la siguiente linea no se 
-//ejecuta hasta que la anterior se haya terminado 
-//de ejecutar
 export function* logoutSaga(action) {
-    /**
-     * call() se puede utilizar en lugar de solo utilizar yield,
-     * la unica ventaja que tiene es que se puede testear debido 
-     * a que se puede engañar facilmente la información interior
-     * sin necesidad de utilizar información verdadera
-     */
     yield call([localStorage, 'removeItem'], 'token');
     yield call([localStorage, 'removeItem'], 'expirationDate');
     yield call([localStorage, 'removeItem'], 'userId');
-    /*yield localStorage.removeItem('token');
-    yield localStorage.removeItem('expirationDate');
-    yield localStorage.removeItem('userId');*/
     yield put(actions.logoutSucceed());
 }
 
@@ -28,21 +16,10 @@ export function* checkAuthTimeoutSaga(action) {
     yield put(actions.logout());
 }
 
-/*
-    Cuando se termina de desarrollar la saga se debe agregar al
-    watch de index.js en la carpeta sagas
-*/
 export function* authUserSaga(action) {
-    /*
-        En sagas no se ejecuta dispatch sino se utiliza put,
-        por ejemplo: 
-        dispatch(authStart()); pasa a ser yield put(actions.authStart());
-        siempre y cuando el metodo 'authStart' sea importado al archivo index 
-        la carpeta actions
-    */
     yield put(actions.authStart());
     const authData = {
-        email: action.email, //el email y password tienen que venir del action
+        email: action.email,
         password: action.password,
         returnSecureToken: true
     };
@@ -52,12 +29,6 @@ export function* authUserSaga(action) {
     }
     try {
         const response = yield axios.post(url, authData); 
-        /*
-            Al utilizar yield frente a axios permite esperar hasta que el 
-            resultado se guarde en la variable response y en este caso ya 
-            no estaría devolviendo un promise por lo que no se utiliza .then(...)
-            y/o .catch(...)
-        */
         const expirationDate = yield new Date(new Date().getTime() + response.data.expiresIn * 1000);
         yield localStorage.setItem('token', response.data.idToken);
         yield localStorage.setItem('expirationDate', expirationDate);

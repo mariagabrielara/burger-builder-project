@@ -16,9 +16,6 @@ export const FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS';
 export const FETCH_ORDERS_FAIL = 'FETCH_ORDERS_FAIL';
 
 export const AUTH_CHECK_STATE = 'AUTH_CHECK_STATE';
-/**
- * SE CREA EL ACTION TYPE
- */
 export const AUTH_USER = 'AUTH_USER';
 export const AUTH_START = 'AUTH_START';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';

@@ -1,8 +1,3 @@
-/**
- * Ya que se utilizaron sagas, ahora los action creators solo 
- * retornan actions
- */
-
 import * as actionTypes from './actionTypes';
 
 export const authStart = () => {
@@ -27,9 +22,6 @@ export const authFail = (error) => {
 };
 
 export const logout = () => {
-    /*localStorage.removeItem('token');
-    localStorage.removeItem('expirationDate');
-    localStorage.removeItem('userId');*/
     return {
         type: actionTypes.AUTH_INITIATE_LOGOUT
     };
@@ -49,10 +41,6 @@ export const checkAuthTimeout = expirationTime => {
 };
 
 export const auth = (email, password, isSignup) => {
-    /*
-        Una vez que ya se pasa su codigo a la saga lo único que se 
-        necesita es devolver un action
-    */
     return {
         type: actionTypes.AUTH_USER,
         email: email,
